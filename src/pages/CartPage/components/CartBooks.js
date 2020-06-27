@@ -4,6 +4,7 @@ import { bookService } from "../../../services/bookService";
 export const CartBooks = (props) => {
   const [books, setBooks] = useState([]);
   const [cartBooks, setCartBooks] = useState([]);
+  const [booksVisible, setBooksVisible] = useState(false);
 
   useEffect(() => {
     getBooks();
@@ -11,6 +12,7 @@ export const CartBooks = (props) => {
   }, []);
 
   function getBooks() {
+    setBooksVisible(false);
     bookService.getBooks().then((res) => {
       // console.log(res.data);
       let books = [];
@@ -21,6 +23,7 @@ export const CartBooks = (props) => {
         books.push(book);
       });
       setBooks(books);
+      setBooksVisible(true);
     });
     // setAddVisible(false);
     // setViewVisible(false);
@@ -134,55 +137,59 @@ export const CartBooks = (props) => {
       <hr />
       <hr />
 
-      <ul style={{ display: "block" }}>
-        {cartBooks.map((book) => {
-          return (
-            <li>
-              <div className="container row">
-                <div className="col-md-6">
-                  <div className="container row">
-                    <div className="col-md-6">
-                      <img
-                        className="custom-image-style"
-                        height="200"
-                        width="200"
-                        src={book.picByte}
-                        style={{ marginTop: "10px" }}
-                      />
-                    </div>
-                    <div
-                      className="col-md-6"
-                      // style={{ marginLeft: "60px", marginTop: "10px" }}
-                    >
-                      <p style={{ marginLeft: "60px" }}>
-                        <strong>
-                          {book.name}: ${book.price}
-                        </strong>
-                      </p>
+      {!booksVisible ? (
+        <div>Loading...</div>
+      ) : (
+        <ul style={{ display: "block" }}>
+          {cartBooks.map((book) => {
+            return (
+              <li>
+                <div className="container row">
+                  <div className="col-md-6">
+                    <div className="container row">
+                      <div className="col-md-6">
+                        <img
+                          className="custom-image-style"
+                          height="200"
+                          width="200"
+                          src={book.picByte}
+                          style={{ marginTop: "10px" }}
+                        />
+                      </div>
                       <div
-                        className=""
-                        style={{
-                          marginLeft: "60px",
-                          bottom: "0",
-                          position: "absolute",
-                        }}
+                        className="col-md-6"
+                        // style={{ marginLeft: "60px", marginTop: "10px" }}
                       >
-                        <button
-                          className="btn btn-sm btn-danger"
-                          onClick={() => deleteFromCart(book.id)}
+                        <p style={{ marginLeft: "60px" }}>
+                          <strong>
+                            {book.name}: ${book.price}
+                          </strong>
+                        </p>
+                        <div
+                          className=""
+                          style={{
+                            marginLeft: "60px",
+                            bottom: "0",
+                            position: "absolute",
+                          }}
                         >
-                          Delete
-                        </button>
+                          <button
+                            className="btn btn-sm btn-danger"
+                            onClick={() => deleteFromCart(book.id)}
+                          >
+                            Delete
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <hr />
-            </li>
-          );
-        })}
-      </ul>
+                <hr />
+              </li>
+            );
+          })}
+        </ul>
+      )}
     </div>
   );
 };

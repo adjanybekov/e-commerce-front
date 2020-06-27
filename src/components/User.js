@@ -8,6 +8,7 @@ export const User = (props) => {
   const [user, setUser] = useState(null);
   const [addVisible, setAddVisible] = useState(false);
   const [viewVisible, setViewVisible] = useState(false);
+  const [usersVisible, setUsersVisible] = useState(false);
 
   useEffect(() => {
     // const user1 = { id: 1, name: "admin", type: "admin", password: "admin" };
@@ -22,9 +23,11 @@ export const User = (props) => {
   }, []);
 
   function getUsers() {
+    setUsersVisible(false);
     userService.getUsers().then((res) => {
       console.log(res.data);
       setUsers(res.data);
+      setUsersVisible(true);
     });
   }
 
@@ -51,44 +54,48 @@ export const User = (props) => {
       >
         add
       </a>
-      <div className="container row">
-        <div className="col-md-6">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((user) => {
-                return (
-                  <tr>
-                    <td>{user.id}</td>
-                    <td>{user.name}</td>
-                    <td>
-                      <button
-                        type="button"
-                        className="btn btn-primary"
-                        onClick={() => {
-                          getUserById(user.id);
-                        }}
-                      >
-                        Show Details
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+      {!usersVisible ? (
+        <div className="container row"> Loading...</div>
+      ) : (
+        <div className="container row">
+          <div className="col-md-6">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map((user) => {
+                  return (
+                    <tr>
+                      <td>{user.id}</td>
+                      <td>{user.name}</td>
+                      <td>
+                        <button
+                          type="button"
+                          className="btn btn-primary"
+                          onClick={() => {
+                            getUserById(user.id);
+                          }}
+                        >
+                          Show Details
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          <div className="col-md-6">
+            {addVisible && <AddUser getUsers={getUsers} />}
+            {viewVisible && <ViewUser user={user} getUsers={getUsers} />}
+          </div>
         </div>
-        <div className="col-md-6">
-          {addVisible && <AddUser getUsers={getUsers} />}
-          {viewVisible && <ViewUser user={user} getUsers={getUsers} />}
-        </div>
-      </div>
+      )}
     </div>
   );
 };
