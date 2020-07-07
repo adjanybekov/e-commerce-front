@@ -6,8 +6,12 @@ export const Nav = (props) => {
       <header>
         <nav className="navbar navbar-expand-md navbar-dark bg-dark">
           <div>
-            <a href="https://www.javainuse.com" className="navbar-brand">
-              JavaInUse
+            <a
+              href="https://adjanybekov.github.io/"
+              className="navbar-brand"
+              target="_blank"
+            >
+              Profile
             </a>
           </div>
 
