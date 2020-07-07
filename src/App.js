@@ -14,7 +14,7 @@ function App() {
           <Route exact path="/admin/books" component={BookPage} />
           <Route exact path="/shop" component={ShopPage} />
           <Route exact path="/cart" component={CartPage} />
-          <Redirect from="*" to="/admin/users" co />
+          <Redirect from="*" to="/shop" />
         </Switch>
       </BrowserRouter>
     </div>
